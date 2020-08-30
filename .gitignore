@@ -3,3 +3,9 @@
 .RData
 .Ruserdata
 *.Rproj
+Derived_Data/*
+Raw_Data/*
+Data/*
+ArcGIS/*
+Docs/*
+*.xlsx
