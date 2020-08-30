@@ -1,7 +1,5 @@
 The oyster-environment-disease system in Chesapeake Bay, MD
 ================
-Kathryn Doering, Michael Wilberg, Christopher Dungan, Carol M., and Mitchell Tarnowski
-September 19, 2019
 
 Project Description
 -------------------
@@ -14,10 +12,6 @@ This work was originally part of Kathryn Doering's master thesis.
 
 Organization
 ------------
-
-### ArcGIS
-
-Maintain this under git? This could also be deleted if it is not necessary.
 
 ### Code
 
@@ -42,10 +36,6 @@ Not needed: - CBF\_water\_qual was only used for some exploratory analyses, so d
 Need, but would prefer to upload in a simpler form: - BarInfo, DzData, SampleInfo, FallSurveyHalfBushel\_KD: MDDNR info. Maybe the best approach would be just to remove the unnecessary columns and resave (maybe save the orginals in a folder called "Raw\_Data"). Will need to chat with DNR folks about if these data can be online and if there is anything I should do about them.
 
 -   CBP\_WQ\_Data\_18\_Sept\_2018 (could maybe write a script) instead to pull the data instead of adding the data itself to the repo? The dataset is quite large, otherwise.
-
-### Derived Data and Figures
-
-Should this be maintained under git?
 
 ### Results
 
