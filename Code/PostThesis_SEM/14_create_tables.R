@@ -61,7 +61,6 @@ make_tbl_sem_sel <- function(mod_sel, fit_measures, temporal = TRUE) {
   }
   meta$num_temp_grps <- unlist(lapply(meta$model, split_fun))
   meta$num_spat_grps <- unlist(lapply(meta$model, split_fun, temporal = FALSE))
-  browser()
   keep_sel_df <- sel_df[, grep("^m|^d", colnames(sel_df))]
   final_df <- dplyr::full_join(meta, keep_sel_df)
   final_df <- dplyr::full_join(final_df, fit_df)
@@ -74,22 +73,23 @@ make_tbl_sem_sel <- function(mod_sel, fit_measures, temporal = TRUE) {
 # SEM selection 
 tbl_list <- make_tbl_sem_sel(mod_sel = mod_sel_path,
                              fit_measures = fit_measures_path)
-write.csv(tbl_list, file.path(tbl_path, "SEM_selection"))
+write.csv(tbl_list, file.path(tbl_path, "SEM_selection.csv"))
 
 
-# SEM_fit
+# SEM_fit ----
 
-#data_summary
+#data_summary ---
 dat <- read.csv(
   paste0("./Derived_Data/PostThesis_SEM/1_Organize_Inputs/dat_SEM_post_thesis_",
-         "2019_01_02", ".csv"))
+         "2019_01_02.csv"))
 
-dat <- dat %>% 
+dat_long <- dat %>% 
   select(year, ID, ts_2_spat_2, temp_s, sal, MSX_Prev_Per, Dermo_Prev_Per,
          M_Med_A_Bar_Per) %>% 
   rename(group = ts_2_spat_2, Temperature = temp_s, Salinity = sal, 
          MSXPrevalence = MSX_Prev_Per, DermoPrevalence = Dermo_Prev_Per,
-         Mortality = M_Med_A_Bar_Per) 
+         Mortality = M_Med_A_Bar_Per) %>% 
+  tidyr::gather(key = "Variable", value = "value", 4:8)
 # TODO: need to gather the obs into 1 col, then compute mean, med, min, max on
 # each
 do_summaries <- list(
@@ -98,14 +98,32 @@ do_summaries <- list(
   min = ~min(.x, na.rm = TRUE), 
   max = ~max(.x, na.rm = TRUE)
 )
-mean <- dat %>% 
-          group_by(group)
-          summarize(across(Temperature:Mortality, mean))
-median <- dat %>% 
-            group_by(group) %>% 
-          summarize(across(Temperature:Mortality, do_summaries))
 
+sum_table <- dat_long %>% 
+            group_by(group, Variable) %>% 
+          summarize(across(value, do_summaries)) %>% 
+          tidyr::separate(col = group, into = c("Years", "Salinity Zone"), 
+                          sep = 6)  %>% 
+          rename(Mean = value_mean, Median = value_median, Min = value_min, 
+                 Max = value_max)
+sum_table$Years <- factor(sum_table$Years, levels = c("91to02", "02to17"), 
+                          labels = c("1991-2002", "2003-2017"))
+sum_table[["Salinity Zone"]] <- factor(sum_table[["Salinity Zone"]], 
+                                       levels = c("Low", "MedHigh"),
+                                         labels = c("Low", "Medium/High"))
+sum_table$Variable <- factor(sum_table$Variable, 
+                             levels = c( "Temperature", "Salinity", 
+                                         "MSXPrevalence", "DermoPrevalence", 
+                                         "Mortality"), 
+                             labels = c("Temperature", "Salinity", 
+                                        "MSX Prevalence", "Dermo Prevalence", 
+                                        "Mortality"))
+sum_table <- sum_table %>%
+               arrange(Years) %>% 
+               arrange(`Salinity Zone`) %>%
+               arrange(Variable)
+write.csv(sum_table, file.path(tbl_path, "SEM_fit.csv"))
 
-#coefficients 
+#coefficients ---
 
-#intercepts
+#intercepts ---
