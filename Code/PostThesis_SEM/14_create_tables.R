@@ -77,6 +77,27 @@ write.csv(tbl_list, file.path(tbl_path, "SEM_selection.csv"))
 
 
 # SEM_fit ----
+dat_r2 <- read.csv(file.path("Derived_Data", "PostThesis_SEM",
+                          "3_Model_Comparisons_M_By_Bar_Base" ,"all_r2_df.csv"))
+dat <- read.csv(
+  paste0("./Derived_Data/PostThesis_SEM/1_Organize_Inputs/dat_SEM_post_thesis_",
+         "2021_05_08.csv"))
+counts <- dat %>% 
+ count(ts_2_spat_2) %>% 
+  rename(group = ts_2_spat_2)
+#vals only for base model
+base_mod_r2 <- dat_r2 %>% 
+  filter(model == "ts_2_spat_2")
+  
+base_mod_r2 <- full_join(base_mod_r2, counts, by = "group") %>% 
+                 select(-model) %>% 
+                 select(group, MSX_Prev_Per, Dermo_Prev_Per, M_Med_A_Bar_Per, n)
+base_mod_r2$group <- factor(base_mod_r2$group,
+                            levels = c("91to02Low", "02to17Low", "91to02MedHigh", "02to17MedHigh"))
+base_mod_r2 <- base_mod_r2 %>% 
+                dplyr::arrange(group)
+write.csv(base_mod_r2, file.path(tbl_path, "sem-fit.csv"))
+
 
 #data_summary ---
 dat <- read.csv(
@@ -122,8 +143,13 @@ sum_table <- sum_table %>%
                arrange(Years) %>% 
                arrange(`Salinity Zone`) %>%
                arrange(Variable)
-write.csv(sum_table, file.path(tbl_path, "SEM_fit.csv"))
+write.csv(sum_table, file.path(tbl_path, "data_summary.csv"))
 
 #coefficients ---
+# this is done in plotting script?
+# ts_grp <- read.csv(file.path("Derived_Data", "PostThesis_SEM",
+#                            "3_Model_Comparisons_M_By_Bar_Base",
+#                            "par_table_ts_2_spat_2_2021_05_08.csv"))
 
 #intercepts ---
+# this is done in plotting script?

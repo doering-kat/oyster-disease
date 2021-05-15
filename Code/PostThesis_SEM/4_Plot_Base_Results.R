@@ -142,7 +142,11 @@ ggplot(ts_grp, aes(x = sal_zone, y = est, fill = years)) +
 ggsave(paste0(write_fig_path, "/coefficients_", grp_names[6], ".png"), device = "png",
     width = 14, height = 8)
 
-# 
+table_coef <- ts_grp
+table_coef <- table_coef  %>% 
+    select(years, sal_zone, fac_relationship, est, se, lower_CI, upper_CI, group_name) %>% 
+    arrange(sal_zone, years,fac_relationship)
+write.csv(table_coef, file.path(write_derived_dat_path, "table_coefficients.csv"))
 # Plot intercepts for 2ts/2sp model --------------------------------------------
 
 intercepts_organized <- GetParTable(fits[[6]]) %>%
@@ -191,6 +195,12 @@ ggplot(intercepts_organized, aes(x = sal_zone, y = est, fill = years)) +
 
 ggsave(paste0(write_fig_path, "/intercepts_", grp_names[6], ".png"), device = "png",
     width = 14, height = 0.5 + 8/2) #height: make approx half of the 2 row plots, but add extra 0.5 in for labels.
+# intercept table ----
+inter_tbl <- intercepts_organized %>% 
+               select(years, sal_zone, lhs, est, se, lower_CI, upper_CI) %>% 
+               arrange(sal_zone, years,lhs)
+write.csv(inter_tbl, file = file.path(write_derived_dat_path, "table_intercepts.csv"))
+
 
 # # Plot coefficients for 2ts/3sp model ----------------------------------------
 # process data:
