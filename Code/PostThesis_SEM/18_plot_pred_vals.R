@@ -6,16 +6,18 @@
 library(ggplot2)
 library(tidyr)
 library(dplyr)
+library(readxl)
 # data ----
 filenames <- list.files(path = file.path("Data", "model_pred_vals_data_tables"), full.names = T)
 group_names <- list.files(path = file.path("Data", "model_pred_vals_data_tables"), full.names = F)
-group_names <- gsub("data_tables_", "", group_names)
-group_names <- gsub(".csv", "", group_names)
+group_names <- gsub("data_table_", "", group_names)
+group_names <- gsub(".xlsx", "", group_names)
+
 
 csvs <- lapply(filenames, function(x) {
-   tmp_csv <- read.csv(x, as.is = T, check.names = FALSE)
+   tmp_csv <- readxl::read_excel(x)
    colnames(tmp_csv)[1] <- "sal"
-   tmp_csv <- gather(tmp_csv, "temp", "disease_M", 2:18)
+   tmp_csv <- gather(tmp_csv, "temp", "disease_M", 2:17)
   })
 names(csvs) <- group_names
 for(i in seq_along(group_names)) {
@@ -36,8 +38,22 @@ dat$disease_fac <- factor(dat[["disease"]], levels = c("msx", "dermo"),
 # rm vals that are out of range ----
 # filter out vals from data that aren't needed. ---
 # Next to do: add NA's for invalid for vals outside of the range observed.
-limits <- read.csv(file.path("Data", "min_max_temp_sal.csv"))
+# note: these are old values
+#limits <- read.csv(file.path("Data", "min_max_temp_sal.csv"))
+dat_SEM <- read.csv(file.path("Derived_Data", "PostThesis_SEM", "1_Organize_Inputs",
+                          "dat_SEM_post_thesis_2021_05_08.csv"))
 # now: figure out how to exclued values that are not within the range
+dat_SEM <- dplyr::select(dat_SEM, ID, year, ts_2_spat_2, temp_s_cen, sal_cen)
+ 
+min_temp <- dat_SEM %>% group_by(ts_2_spat_2) %>%  summarize(min_temp = min(temp_s_cen))
+max_temp <- dat_SEM %>% group_by(ts_2_spat_2) %>%  summarize(max_temp = max(temp_s_cen))
+min_sal <- dat_SEM %>% group_by(ts_2_spat_2) %>%  summarize(min_sal = min(sal_cen))
+max_sal <- dat_SEM %>% group_by(ts_2_spat_2) %>%  summarize(max_sal = max(sal_cen))
+
+limits <- dplyr::full_join(min_temp, max_temp, by = "ts_2_spat_2") %>% 
+   dplyr::full_join(min_sal, by = "ts_2_spat_2") %>% 
+   dplyr::full_join(max_sal, by = "ts_2_spat_2") %>% 
+   dplyr::rename(Group = ts_2_spat_2)
 
 # look at values for a particular group
 # going line by lines, see if sal and temp are both in range.
@@ -45,14 +61,14 @@ limits <- read.csv(file.path("Data", "min_max_temp_sal.csv"))
 # perhaps makes sense to do this before binding?
 for (i in seq_len(nrow(dat))) {
    tmp_row <- dat[i,]
-   tmp_grp <- tmp_row[,"group_chr"]
+   tmp_grp <- tmp_row[,"group_chr", drop = TRUE]
    tmp_limit <- limits[limits$Group == tmp_grp,]
-   if(tmp_row[, "sal"] < tmp_limit[,"min_sal"] |
-      tmp_row[, "sal"] > tmp_limit[,"max_sal"]) {
+   if(tmp_row[, "sal", drop = TRUE] < tmp_limit[,"min_sal", drop = TRUE] |
+      tmp_row[, "sal", drop = TRUE] > tmp_limit[,"max_sal", drop = TRUE]) {
       dat[i, "disease_M"] <- NA
    }
-   if(tmp_row[,"temp"] < tmp_limit[,"min_temp"] |
-      tmp_row[,"temp"] > tmp_limit[,"max_temp"]) {
+   if(tmp_row[,"temp", drop = TRUE] < tmp_limit[,"min_temp", drop = TRUE] |
+      tmp_row[,"temp", drop = TRUE] > tmp_limit[,"max_temp", drop = TRUE]) {
       dat[i, "disease_M"] <- NA
    }
 }

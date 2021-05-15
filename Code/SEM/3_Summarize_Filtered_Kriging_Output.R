@@ -24,6 +24,7 @@ min_max_mo_summer_sal <- c(4,10)
 # Salinity
 sal_cruise_date <- read.csv("./Derived_Data/Run_Kriging_S_SAL_Output_2018_09_20/cruise_date_lookup.csv") # cruise date lookup for salinity.
 # salinity (with cruises with too few obs removed.)
+#TODO: this is the data set to use in the window change.
 sal_pred <- read.csv("./Derived_Data/Filter_Kriging/3_Filter_Kriging_By_Count/Predicted_S_SAL_subset_2018_10_10.csv")
 
 #Wtemp

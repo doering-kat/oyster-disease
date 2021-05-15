@@ -17,7 +17,7 @@ write_files <- T #set to false if do not want to save new data.
 # Load data and results --------------------------------------------------------
 # Results from SEM.
 save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/5_Run_M_by_Bar_dermo_intensity"
-file_date_fits <- "2019_01_04"
+file_date_fits <- "2021_05_10"
 fits <- readRDS(paste0(save_dir_name_fits, "/lavaan_fits_", file_date_fits, ".rds"))
 
 # list of group names for each of the 9 models (in same order as fits)
@@ -113,8 +113,9 @@ fitMeasures(fits[["ts_2_spat_2"]])
 allfit <- data.frame()
 for (i in 1:9){
     tmp_fit <- fitMeasures(fits[[i]], fit.measures = c("rmsea", "srmr", "cfi"))
-    allfit <- bind_rows(allfit, tmp_fit)
+    allfit <- rbind(allfit, tmp_fit)
 }
+colnames(allfit) <- c("rmsea", "srmr", "cfi")
 # add model names
 allfit$model <- grp_names
 

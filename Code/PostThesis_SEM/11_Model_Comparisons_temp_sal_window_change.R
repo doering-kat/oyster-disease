@@ -18,8 +18,8 @@ write_files <- T #set to false if do not want to save new data.
 # Load data and results --------------------------------------------------------
 # Results from SEM.
 
-save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/10_Run_temp_sal_window_change"
-file_date_fits <- "2019_01_07"
+save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/10_Run_temp_sal_window_change_redo"
+file_date_fits <- "2021_05_11"
 fits <- readRDS(paste0(save_dir_name_fits, "/lavaan_fits_", file_date_fits, ".rds"))
 datasets <- readRDS(paste0(save_dir_name_fits, "/lavaan_data_", file_date_fits, ".rds"))
 
@@ -105,8 +105,9 @@ if(write_files == T){
 allfit <- data.frame()
 for (i in 1:length(fits)){
     tmp_fit <- fitMeasures(fits[[i]], fit.measures = c("rmsea", "srmr", "cfi"))
-    allfit <- bind_rows(allfit, tmp_fit)
+    allfit <- rbind(allfit, tmp_fit)
 }
+colnames(allfit) <- c("rmsea", "srmr", "cfi")
 # add model names
 allfit$model <- grp_names
 
@@ -283,3 +284,4 @@ if(write_files == T){
     saveRDS(change_list, paste0(write_derived_dat_path, "/coef_change_scen_list.rda"))
     write.csv(change_df, paste0(write_derived_dat_path, "/coef_change_df_all_scen.csv"), row.names = F)
 }
+

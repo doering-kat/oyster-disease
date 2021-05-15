@@ -9,20 +9,19 @@
 # assuming a break at 
 # 
 # TODO: may need to modify the inputs based on information from Mitch on Bars 
-# That should be low salinity 
+# That should be low salinity  (did not get to this)
 # 
 # Created 2 Jan 2019 by Kathryn Doering 
 # 
 # Load packages, set options ---------------------------------------------------
 
 library(lavaan)
-library(tidyverse)
-library(semPlot)
+# library(tidyverse)
+# library(semPlot)
 options(stringsAsFactors = F)
 # Load Data --------------------------------------------------------------------
-file_date <- "2019_01_02"
+file_date <- "2021_05_08"
 dat <- read.csv(paste0("./Derived_Data/PostThesis_SEM/1_Organize_Inputs/dat_SEM_post_thesis_", file_date, ".csv"))
-
 # Write Lavaan model -----------------------------------------------------------
 # used centered salinity and temp, and M on the bar level
 
@@ -46,6 +45,7 @@ grp_names <- c(NA,"ts_2", "ts_4", "spat_2", "spat_3", "ts_2_spat_2",
 fits <- list()
 # no gropus.
 fits[[1]] <- sem(mod_lavaan, data = dat)
+
 for (i in 2:length(grp_names)) {
     fits[[i]] <- sem(mod_lavaan, data = dat, group = grp_names[i])
 }

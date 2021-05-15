@@ -1,11 +1,10 @@
 # HEADER -----------------------------------------------------------------------
-# TODO: add freshet dataset to the SEM data.
 # Bind Datasets for SEM
 # 
-# (remove extreme freshet events before running?)
 # Created Oct 11 2018 by Kathryn Doering 
 # Load Packages and set options ------------------------------------------------
-library(tidyverse)
+library(dplyr)
+library(tidyr)
 options(stringsAsFactors = F)
 
 # Load Data --------------------------------------------------------------------
@@ -29,9 +28,9 @@ wtemp_avg_win <- read.csv(paste0("./Derived_Data/SEM/3_Summarize_Filtered_Krigin
 # read in spatial categories (Salinity Zones)
 # Categorized by MDNR in their 5 yr rpt (plus KD added potomac cats based on cats
 # of the adjacent NOAA codes)
-# 
+# note that these data had a duplicate row for noaa code 39 which was corrected
 NOAA_sal_zones <-  read.csv("./Data/Sal_Zones_Five_Yr_Report_2010_15_Table_4_5.csv")
-
+names(NOAA_sal_zones) <- c("NOAA_Code", "Sal_Zone")
 # read in data on freshet occurences
 # need to finish compiling these data.
 # (probably will only be used to pull out) - bar or NOAA level?
@@ -145,6 +144,7 @@ SEM_dat_no_NA <- left_join(SEM_dat_no_NA, ID_NOAA_key, by = "ID")
 # add spatial cluster to the data.
 NOAA_sal_zones <- rename(NOAA_sal_zones, NOAACode = NOAA_Code)
 SEM_dat_no_NA <- left_join(SEM_dat_no_NA, NOAA_sal_zones, by = "NOAACode" )
+
 # make into categorical levels
 SEM_dat_no_NA <- SEM_dat_no_NA %>% 
                     #2 spatial groups - 0 = low, med/high = 1

@@ -25,7 +25,7 @@ write_files <- T #set to false if do not want to save new data.
 
 # Results from SEM.
 save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/2_Run_M_By_Bar_Base"
-file_date_fits <- "2019_01_02"
+file_date_fits <- "2021_05_08"
 fits <- readRDS(paste0(save_dir_name_fits, "/lavaan_fits_", file_date_fits, ".rds"))
 
 # list of group names for each of the 9 models (in same order as fits)
@@ -33,7 +33,7 @@ grp_names <- c(NA,"ts_2", "ts_4", "spat_2", "spat_3", "ts_2_spat_2",
     "ts_2_spat_3", "ts_4_spat_2", "ts_4_spat_3")
 
 # load the data used to make these models
-file_date_dat <- "2019_01_02"
+file_date_dat <- "2021_05_08"
 dat <- read.csv(paste0("./Derived_Data/PostThesis_SEM/1_Organize_Inputs/dat_SEM_post_thesis_", file_date_dat, ".csv"))
 
 
@@ -96,14 +96,14 @@ fac_lev_rel <- c(fac_lev_rel, paste0("Dermo_Prev_Per~", c("temp_s_cen", "sal_cen
 fac_lev_rel <- c(fac_lev_rel, "M_Med_A_Bar_Per~Dermo_Prev_Per")
 
 # to label facets:
-# rel_labels <- list(
-#     'MSX_Prev_Per~temp_s_cen' = "Temperature -> % MSX Prevalence",
-#     'MSX_Prev_Per~sal_cen' = "salinity -> % MSX Prevalence",
-#     'M_Med_A_Bar_Per~MSX_Prev_Per' = "% MSX Prevalence -> % Mortality",
-#     'Dermo_Prev_Per~temp_s_cen' = "Temperature -> % Dermo Prevalence",
-#     'Dermo_Prev_Per~sal' = "salinity -> % Dermo Prevalence",
-#     'Dermo_Med_Annual_Per~MSX_Prev_Per'="% Dermo Prevalence -> % Mortality"
-# )
+rel_labels <- list(
+    'MSX_Prev_Per~temp_s_cen' = "Temperature -> % MSX Prevalence",
+    'MSX_Prev_Per~sal_cen' = "salinity -> % MSX Prevalence",
+    'M_Med_A_Bar_Per~MSX_Prev_Per' = "% MSX Prevalence -> % Mortality",
+    'Dermo_Prev_Per~temp_s_cen' = "Temperature -> % Dermo Prevalence",
+    'Dermo_Prev_Per~sal' = "salinity -> % Dermo Prevalence",
+    'Dermo_Med_Annual_Per~MSX_Prev_Per'="% Dermo Prevalence -> % Mortality"
+)
 
 # to label facets:
 fac_rel_labels <- c("Temperature -> % MSX Prevalence",

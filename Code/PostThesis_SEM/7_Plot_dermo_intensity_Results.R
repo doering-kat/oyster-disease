@@ -24,7 +24,7 @@ write_files <- T #set to false if do not want to save new data.
 
 # Results from SEM.
 save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/5_Run_M_By_Bar_dermo_intensity"
-file_date_fits <- "2019_01_04"
+file_date_fits <- "2021_05_10"
 fits <- readRDS(paste0(save_dir_name_fits, "/lavaan_fits_", file_date_fits, ".rds"))
 
 # list of group names for each of the 9 models (in same order as fits)
@@ -32,7 +32,7 @@ grp_names <- c(NA,"ts_2", "ts_4", "spat_2", "spat_3", "ts_2_spat_2",
     "ts_2_spat_3", "ts_4_spat_2", "ts_4_spat_3")
 
 # load the data used to make these models
-file_date_dat <- "2019_01_02"
+file_date_dat <- "2021_05_08"
 dat <- read.csv(paste0("./Derived_Data/PostThesis_SEM/1_Organize_Inputs/dat_SEM_post_thesis_", file_date_dat, ".csv"))
 
 # Create folder for Derived data, figures --------------------------------------

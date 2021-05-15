@@ -10,7 +10,7 @@ dir.create(tbl_path)
 
 mod_sel_path <- file.path("Derived_Data", "PostThesis_SEM", 
                           "3_Model_Comparisons_M_By_Bar_base", 
-                          "model_selection_model_run_2019_01_02.csv")
+                          "model_selection_model_run_2021_05_08.csv")
 fit_measures_path <- file.path("Derived_Data", "PostThesis_SEM", 
                                "3_Model_Comparisons_M_By_Bar_base", 
                                "fit_measures.csv")
@@ -81,7 +81,7 @@ write.csv(tbl_list, file.path(tbl_path, "SEM_selection.csv"))
 #data_summary ---
 dat <- read.csv(
   paste0("./Derived_Data/PostThesis_SEM/1_Organize_Inputs/dat_SEM_post_thesis_",
-         "2019_01_02.csv"))
+         "2021_05_08.csv"))
 
 dat_long <- dat %>% 
   select(year, ID, ts_2_spat_2, temp_s, sal, MSX_Prev_Per, Dermo_Prev_Per,

@@ -14,7 +14,7 @@ library(semPlot)
 options(stringsAsFactors = F)
 
 # Load Data --------------------------------------------------------------------
-file_date <- "2019_01_02"
+file_date <- "2021_05_08"
 dat <- read.csv(paste0("./Derived_Data/PostThesis_SEM/1_Organize_Inputs/dat_SEM_post_thesis_", file_date, ".csv"))
 
 # set folder names to write to -------------------------------------------------

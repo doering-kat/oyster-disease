@@ -9,14 +9,15 @@
 # Written 2 Jan 2019 by KD
 # 
 # Load packages, set options ---------------------------------------------------
-library(tidyverse)
+library(dplyr)
 options(stringsAsFactors = F)
 # Load Data --------------------------------------------------------------------
 # Bar level M obs (instead of the NOAA code level ones used previously)
 M_summary <- read.csv("./Data/summary_M_by_bar_model_d_4_1.csv")
 
 # Read in previous SEM data set 
-file_date <- "2018_10_17"
+# Note: updated 5/8/2021 due to duplicate rows
+file_date <- "2021_05_08"
 dat_SEM_prev <- read.csv(paste0("./Derived_Data/SEM/4_Bind_Data_for_SEM/SEM_dat_no_NA_", file_date, ".csv"))
 
 # Set up folders to save  ------------------------------------------------------

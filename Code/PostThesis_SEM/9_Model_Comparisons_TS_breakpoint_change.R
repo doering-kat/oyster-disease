@@ -14,7 +14,7 @@ write_files <- T #set to false if do not want to save new data.
 # Load data and results --------------------------------------------------------
 # Results from SEM.
 save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/8_Run_TS_breakpoint_change"
-file_date_fits <- "2019_01_07"
+file_date_fits <- "2021_05_10"
 fits <- readRDS(paste0(save_dir_name_fits, "/lavaan_fits_", file_date_fits, ".rds"))
 dat <- read.csv(paste0(save_dir_name_fits, "/lavaan_fits_data_", file_date_fits, ".csv"))
 
@@ -97,8 +97,9 @@ if(write_files == T){
 allfit <- data.frame()
 for (i in 1:length(fits)){
     tmp_fit <- fitMeasures(fits[[i]], fit.measures = c("rmsea", "srmr", "cfi"))
-    allfit <- bind_rows(allfit, tmp_fit)
+    allfit <- rbind(allfit, tmp_fit)
 }
+colnames(allfit) <- c("rmsea", "srmr", "cfi")
 # add model names
 allfit$model <- grp_names
 

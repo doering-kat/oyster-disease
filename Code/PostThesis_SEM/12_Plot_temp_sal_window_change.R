@@ -19,8 +19,8 @@ write_files <- T #set to false if do not want to save new data.
 # Load data --------------------------------------------------------------------
 
 # Results from SEM.
-save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/10_Run_temp_sal_window_change"
-file_date_fits <- "2019_01_07"
+save_dir_name_fits<- "./Derived_Data/PostThesis_SEM/10_Run_temp_sal_window_change_redo"
+file_date_fits <- "2021_05_11"
 fits <- readRDS(paste0(save_dir_name_fits, "/lavaan_fits_", file_date_fits, ".rds"))
 # load the data used to make these models
 dat <- readRDS(paste0(save_dir_name_fits, "/lavaan_data_", file_date_fits, ".rds"))
