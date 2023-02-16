@@ -72,6 +72,8 @@ dir.create(der_dat_path)
 fig_path <- file.path("Figures", "PostThesis_SEM", "19_temp_sal_dfa")
 dir.create(fig_path)
 
+# Plot sal/temp histograms ----
+
 # year and bar limits ------
 # Years
 yr_0 <- 1990 # this year should NOT be used in the data set.
@@ -129,3 +131,23 @@ mod_list <- lapply(n_trends, Run_DFA_Clos)
 names(mod_list) <- paste0(n_trends, "_trends_diagonal_and_equal")
 # save the list of models
 saveRDS(mod_list, paste0(der_dat_path, "/dfa_mod_list.rda"))
+
+# calculate avg and sd's before and after 2002.
+# That may be the easiest way to look at the question 
+# of if environmental conditons were actually 
+# better for oysters post 2002
+sal_dat  %>% 
+filter(year <= 2002)  %>% 
+select(sal)  %>% 
+summary()
+
+sal_dat  %>% 
+filter(year > 2002)  %>% 
+select(sal)  %>% 
+summary()
+
+
+sal_dat$yr_fac <- ifelse(sal_dat$year <= 2002, "91to02", "03to17")
+sal_dat$yr_fac <- as.factor(sal_dat$yr_fac)
+ggplot(sal_dat, aes(x = yr_fac, y = sal))+
+geom_boxplot()
